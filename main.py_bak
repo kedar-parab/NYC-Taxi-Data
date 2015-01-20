@@ -1,0 +1,83 @@
+import os
+import webapp2
+import jinja2
+from google.appengine.ext import db
+from urllib import quote
+
+template_dir = os.path.join(os.path.dirname(__file__), 'templates')
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
+jinja_env.filters['fixurl'] = quote
+
+class Handler(webapp2.RequestHandler):
+    def write(self, *a, **kw):
+        self.response.out.write(*a, **kw)
+    def render_str(self, template, **params):
+        t = jinja_env.get_template(template)
+        return t.render(params)
+    def render(self, template, **kw):   
+        self.write(self.render_str(template, **kw))
+
+
+class ImageHandler(webapp2.RequestHandler):
+    def get (self):
+        design = db.get(self.request.get("entity_id"))
+        if design.image:
+            self.response.headers['Content-Type'] = "image/png"
+            self.response.out.write(design.image)
+
+
+class PostHandler(Handler):
+    def get(self):
+        design = db.get(self.request.get("entity_id"))
+        if design:
+            self.render("front.htm", designs = [design]) 
+
+
+class Design(db.Model):
+    created = db.DateTimeProperty(auto_now_add = True)
+    designTitle = db.StringProperty(required = True)
+    image = db.BlobProperty(required = False)
+    designerName = db.StringProperty(required = True)
+    designerPosition = db.StringProperty(required = True)
+    designerDetails = db.TextProperty(required = True)
+    desc = db.TextProperty(required = True)
+    garmentDetails = db.TextProperty(required = True)
+ 
+
+class MainPage(Handler):
+    def get(self):
+        self.render_front()
+
+    def render_front(self):
+        designs = db.GqlQuery("SELECT * FROM Design ORDER BY created DESC")
+        #design_query = Design.all()
+        #designs = design_query.fetch(10)
+        self.render("front.htm", designs = designs)    
+
+
+class ControlPanel(Handler):
+    def get(self):
+        self.render_front()
+
+    def post(self):
+        designTitle = self.request.get("design_title")
+        designImage = self.request.get("design_picture")
+        designerName = self.request.get("designer_name")
+        designerPosition = self.request.get("designer_position")
+        designerDetails = self.request.get("designer_details")
+        desc = self.request.get("description")
+        garmentDetails = self.request.get("garment_details")
+        
+        if designTitle and designerName and desc and garmentDetails:
+            design = Design(designTitle = designTitle, image = designImage, designerName = designerName, designerPosition = designerPosition, designerDetails = designerDetails, desc = desc, garmentDetails = garmentDetails)
+            design.put()
+            self.redirect("/ControlPanel")
+        else:
+            error = "One or more mandarory fields missing."# + ' '.join (['test', designTitle, designerName, desc, garmentDetails])
+            self.render_front(designTitle, designerName, designerPosition, designerDetails, desc, garmentDetails, error)
+    
+    def render_front(self, designTitle = "", designerName = "", designerPosition = "", designerDetails = "", desc = "", garmentDetails = "", error=""):
+        self.render("control_panel.htm", designTitle = designTitle, designerName = designerName, designerPosition = designerPosition, 
+            designerDetails = designerDetails, desc = desc, garmentDetails = garmentDetails, error = error)
+
+app = webapp2.WSGIApplication([('/', MainPage), ('/ControlPanel', ControlPanel), ('/img', ImageHandler), ('/item', PostHandler)], debug=True)

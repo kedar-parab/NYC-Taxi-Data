@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>Application</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+               <!-- Grab the JQuery API from the Google servers -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+       <!-- Our own JQuery code to do the AJAX-y stuff -->
+       <script type="text/javascript" charset="utf-8">
+    var myvar;
+     $(document).ready(function(){
+       document.getElementById('txtValue').addEventListener('change', readFile, false);
+       
+       function readFile (evt) { 
+           var files = evt.target.files;
+           var file = files[0];           
+           var reader = new FileReader();
+           reader.onload = function() {
+             //alert(this.result);            
+             myvar = this.result; 
+           }
+           reader.readAsText(file)
+        }
+      
+      $('.button').click(function()
+      {
+        //alert(myvar);
+        var name = myvar;
+        
+        mymsg = "Your file is now being parsed";
+        $('#gasDisplayMsg').html(mymsg);
+                var dataString = 'txtValue='+ name;  
+                // This creates the AJAX connection
+                $.ajax({
+                    type: "POST",
+                    url: "/upload",
+                    data: dataString,
+                    success: function(data) {
+                        $('#gasDisplayMsg').html(data.text);
+                        
+           $("#bill")[0].reset();
+                    }
+
+                });
+            return false;
+      });
+
+      });
+       </script>
+  </head>
+  <body>
+         <form name="contact" method="post" action="" id="bill">
+            <label for="txtValue">Enter a bill : </label>
+            <input type="file" name="txtValue" value="" id="txtValue">
+            <input type="submit" name="submit" class="button" id="submit_btn" value="Send" />
+         </form>
+         <div id="gasDisplayMsg">
+         </div>
+         <div id="gasDisplay">
+         </div>
+  </body>
+</html>
+

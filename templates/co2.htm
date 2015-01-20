@@ -1,0 +1,92 @@
+<html>
+<head>
+    <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- /*        <script type="text/javascript">
+            $(document).ready(function(){
+                  $("#button").on('click', function() {
+           $("#ext1").show();
+        });
+    );
+        </script>*/ -->
+<script>
+            google.load('visualization', '1', {packages: ['corechart']});
+    google.setOnLoadCallback(drawChart);
+    google.setOnLoadCallback(drawChart1);
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'X');
+      data.addColumn('number', 'CO2 emissions in Tonnes');
+
+      data.addRows([
+        ['Jan', 13599.96867],   ['Feb', 12722.68847],  ['Mar', 14962.73485],
+        ['Apr', 14488.57259],  ['May', 14992.63357],  ['Jun', 14247.00623],
+        ['Jul', 13490.95359],  ['Aug', 13025.78271],  ['Sep', 11382.53995],
+        ['Oct', 14912.18508],  ['Nov', 13864.52284], ['Dec', 13741.84366]
+      ]);
+
+      var options = {
+        width: 1000,
+        height: 563,
+        hAxis: {
+          title: 'Month'
+        },
+        vAxis: {
+          title: 'CO2 emissions'
+        }
+      };
+
+      var chart = new google.visualization.LineChart(
+        document.getElementById('ex0'));
+
+      chart.draw(data, options);
+
+    }
+    function drawChart1() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'X');
+      data.addColumn('number', 'CO2 emissions in Tonnes');
+
+      data.addRows([
+        ['Jan', 13634.10679],   ['Feb', 12739.62838],  ['Mar', 14978.84675],
+        ['Apr', 14499.44207],  ['May', 14999.58028],  ['Jun', 14254.85257],
+        ['Jul', 13500.14292],  ['Aug', 390324.4433],  ['Sep', 11391.03163],
+        ['Oct', 14921.53092],  ['Nov', 13872.93124], ['Dec', 13750.56427]
+      ]);
+
+      var options = {
+        width: 1000,
+        height: 563,
+        hAxis: {
+          title: 'Month'
+        },
+        vAxis: {
+          title: 'CO2 emissions'
+        }
+      };
+
+      var chart = new google.visualization.LineChart(
+        document.getElementById('ex1'));
+
+      chart.draw(data, options);
+
+    }
+</script>
+    <style type="text/css">
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;  
+    }
+    </style>
+</head>
+    <body>
+      <div class="center">
+          <div id="ex0" style='width: 900px; height: 500px;'></div>
+          <div id="ex1" style='width: 900px; height: 500px;'></div>
+      </div>
+          </body>
+</html>
+

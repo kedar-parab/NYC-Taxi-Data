@@ -1,0 +1,42 @@
+Python Script / HIVE Queries
+
+1. Which neighborhoods are better served by taxis?
+Map-reduce python script in folder Neighborhood (Provided by Dr. Huy)
+
+2. What are the popular sources and destination?
+Map-reduce python Script in folder SourceDestination
+
+3. How does taxi density vary throughout the year for each neighborhood?
+Same as 1, ran for each month seperately.
+
+4. How does taxi density vary hourly, during the day of each week?
+"select from_unixtime(unix_timestamp(pickup_datetime), 'EEEE') as day, hour(pickup_datetime) as hour, count(*) from trip_data where pickup_datetime is not null group by from_unixtime(unix_timestamp(pickup_datetime), 'EEEE'), hour(pickup_datetime);"
+
+
+How does the tip vary hourly over the week?
+"select from_unixtime(unix_timestamp(pickup_datetime), 'EEEE') as day, hour(pickup_datetime) as hour, SUM(tip_amount) from trip_fare where pickup_datetime is not null group by from_unixtime(unix_timestamp(pickup_datetime), 'EEEE'), hour(pickup_datetime);"
+
+
+How does pattern of trips vary with weather?
+Used the data from http://www.wunderground.com/history/ . We picked short trips with fareamount<8
+"select date(pickup_datetime) as dat ,count(*) from trip_fare where fare_amount<8  group by date(pickup_datetime) order by dat asc;"
+
+Are there regions where the taxi density is always high (or low)?
+Same as 1 Found Taxi Density for all neighborhoods.
+
+What are the Carbon Emissions by taxis over the year?
+Before: 
+"select month(pickup_datetime), SUM(trip_distance) as distance, count(*) as month from trip_data group by month(pickup_datetime) order by month asc;"
+After:
+"select month(pickup_datetime), SUM(trip_distance) as distance, count(*) as month from trip_data where trip_distance<50 group by month(pickup_datetime) order by month asc;"
+Used Carbon Emission factor from the website: http://www.carbonica.org/taxi-calculator-individual.aspx
+
+Does the Taxi Density change by closing down of Fort Lee Lane Closure Scandal?
+It didnt affect the Traffic Density for the week - 9-13 September,2013 due this event. Hypothesis: Since this is the second bridge that connects New Jersy and Manhattan, people generally use PATH trains or take the other bridge route i.e. Lincoln Tunnel or Holland Tunnel.
+
+Is there a patterns in Revenue made by Vendor throughout the year?
+"select month(pickup_datetime) as mon, from_unixtime(unix_timestamp(pickup_datetime), 'EEEE') as day, vendor_id, SUM(fare_amount) from trip_fare group by  month(pickup_datetime),from_unixtime(unix_timestamp(pickup_datetime), 'EEEE'), vendor_id order by mon asc ;"
+
+Tips by Taxi Drivers throughout the year and is there a pattern during the Holidays?
+"select date(pickup_datetime) as dat, avg(100*tip_amount/fare_amount) from trip_fare group by date(pickup_datetime) order by dat asc;"
+We joined the result with the Holiday Dates we found on the internet.

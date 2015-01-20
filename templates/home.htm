@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!-- saved from url=(0028)http://ard-mara.appspot.com/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Taxi Analytics</title>
+        <style type="text/css">
+#div7 {
+  background: white;
+}
+#div6 {
+  background: white;
+}
+body {
+  background: black;
+  font-family: "Calibri";
+}
+#wrap {
+width:98%;
+margin:0 auto;
+padding: 15px;
+}
+
+#main {
+float:right;
+width:83%;
+background:#B4B4B4;
+}
+
+#sidebar {
+float:left;
+width:15%;
+background:black;
+height: 5000px;
+position: fixed;
+font-family: "Calibri";
+}
+.buttons, h2, h3{
+    color: white;
+    text-align: center;
+}
+.buttons .selected {
+    color: white;
+}
+a {
+  text-decoration: none;
+  color: white;
+  font-family: "Calibri";
+}
+#logo {
+  height: 75px;
+  width: 100%;
+}
+
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            $('.showSingle').on('click', function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+            $('.targetDiv').hide();
+            $('#div' + $(this).data('target')).show();
+        });
+        $('.showSingle').first().click();
+    }
+    );
+        </script>
+    </head>
+    <body>
+<div id="wrap">
+    <div id="main">
+        <div id="div1" class="targetDiv"><iframe src="https://www.google.com/fusiontables/embedviz?q=select+col0%3E%3E0+from+1wyRzQ78w7Lm8sDpL1Ph-dqGTlrdNBc4PHxkuI6xU+where+col1%3E%3E13+%3C%3D+27274052+and+col1%3E%3E13+%3E%3D+12&viz=MAP&h=false&lat=40.68017233756268&lng=-73.99090262355043&t=1&z=12&l=col0%3E%3E0&y=2&tmplt=2&hml=KML" style="height:800px; width:100%; position: relative;"></iframe></div>
+        <!-- <div id="div2" class="targetDiv"><iframe src="/parallel" style="height: 950px; width:100%;"></iframe></div> -->
+        <div id="div3" class="targetDiv"><iframe src="https://s3.amazonaws.com/pc-krs/s-d/s-d.html" style="height: 900px; width:100%;"></iframe></div>
+        <div id="div2" class="targetDiv"><iframe src="/linechart" style="height:900px; width:100%;"></iframe></div>
+        <div id="div5" class="targetDiv"><iframe src="/co2" style="height:900px; width:100%;"></iframe><a href="#">Data anamolies</a></div>
+        <div id="div6" class="targetDiv"><iframe src="http://s3.amazonaws.com/pc-krs/s-d/trips.html" style="height:900px; width:100%;"></iframe></div>
+        <div id="div7" class="targetDiv"><iframe src="http://s3.amazonaws.com/pc-krs/s-d/tip.html" style="height:900px; width:100%;"></iframe></div>
+        <div id="div9" class="targetDiv"><iframe src="https://docs.google.com/spreadsheets/d/157PePsWAQrx5bwpruSM7FX66PR1O1BMkjL6kQgvs1IU/pubchart?oid=625797234&amp;format=interactive" style="height:900px; width:100%;"></iframe></div>
+        <div id="div8" class="targetDiv"><iframe src="https://docs.google.com/spreadsheets/d/157PePsWAQrx5bwpruSM7FX66PR1O1BMkjL6kQgvs1IU/pubchart?oid=1936129798&amp;format=interactive" style="height:900px; width:100%;"></iframe></div>
+    </div>
+<!--     <div id = "footer"> Footer</div> -->
+    <div id="sidebar">
+        <img id="logo" src="http://www.taxi-alba.com/images/Presentation/sitraCOS816814_204901_taxi.jpg">
+        <h2>Taxi-Analytics</h2>
+        <h3>Team Forty-Two</h3><br><hr>
+        <div class="buttons">
+            <a class="showSingle" data-target="1" href="#">Pick-up density</a><br><hr>
+            <a class="showSingle" data-target="2" href="https://s3.amazonaws.com/pc-krs/parallel-coordinates/examples/slickgrid_weather.html" target="_blank">Weather impact</a><br><hr>
+            <a class="showSingle" data-target="3" href="#">Source & Destination</a><br><hr>
+<!--             <a class="showSingle" data-target="4">Normalized Curve</a><br><hr> -->
+            <a class="showSingle" data-target="5" href="#">Carbon Footprints</a><br><hr>
+            <a class="showSingle" data-target="6" href="#">Taxi density Day/Hour</a><br><hr>
+            <a class="showSingle" data-target="7" href="#">Tip Variation Day/Hour</a><br><hr>
+            <a class="showSingle" data-target="9" href="#">Tip Variation over the year</a><br><hr>
+            <a class="showSingle" data-target="8">Vendor Revenue</a><br><hr>
+        </div>
+    </div>
+</div>
+    
+</body></html>
